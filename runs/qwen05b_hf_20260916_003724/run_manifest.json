@@ -1,0 +1,16 @@
+{
+  "prompts": {
+    "backend": "hf",
+    "ifeval_path": "data/input_data.jsonl",
+    "ifeval_sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+    "n_prompts": 541,
+    "template_mode_config": "chat",
+    "template_mode_used": "chat",
+    "system_prompt": "",
+    "tokenizer": {
+      "id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "revision": "7ae557604adf67be50417f59c2c2f167def9a775"
+    },
+    "transformers_version": "4.44.2"
+  }
+}

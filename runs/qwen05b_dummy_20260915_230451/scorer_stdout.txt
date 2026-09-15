@@ -1,0 +1,86 @@
+================================================================
+/home/runj/BRAIN/module_3_evaluation/runs/qwen05b_dummy_20260915_230451/eval_results_strict.jsonl Accuracy Scores:
+prompt-level: 0.15157116451016636
+instruction-level: 0.28177458033573144
+
+change_case 0.3146067415730337
+combination 0.0
+detectable_content 0.0
+detectable_format 0.05732484076433121
+keywords 0.4294478527607362
+language 0.0
+length_constraints 0.32867132867132864
+punctuation 1.0
+startend 0.22388059701492538
+
+change_case:capital_word_frequency 0.36
+change_case:english_capital 0.0
+change_case:english_lowercase 0.48717948717948717
+combination:repeat_prompt 0.0
+combination:two_responses 0.0
+detectable_content:number_placeholders 0.0
+detectable_content:postscript 0.0
+detectable_format:constrained_response 0.0
+detectable_format:json_format 0.29411764705882354
+detectable_format:multiple_sections 0.0
+detectable_format:number_bullet_lists 0.12903225806451613
+detectable_format:number_highlighted_sections 0.0
+detectable_format:title 0.0
+keywords:existence 0.0
+keywords:forbidden_words 1.0
+keywords:frequency 0.2619047619047619
+keywords:letter_frequency 0.30303030303030304
+language:response_language 0.0
+length_constraints:nth_paragraph_first_word 0.0
+length_constraints:number_paragraphs 0.0
+length_constraints:number_sentences 0.5576923076923077
+length_constraints:number_words 0.34615384615384615
+punctuation:no_comma 1.0
+startend:end_checker 0.0
+startend:quotation 0.36585365853658536
+================================================================
+/home/runj/BRAIN/module_3_evaluation/runs/qwen05b_dummy_20260915_230451/eval_results_loose.jsonl Accuracy Scores:
+prompt-level: 0.1534195933456562
+instruction-level: 0.2829736211031175
+
+change_case 0.3146067415730337
+combination 0.0
+detectable_content 0.0
+detectable_format 0.07006369426751592
+keywords 0.4233128834355828
+language 0.0
+length_constraints 0.32867132867132864
+punctuation 1.0
+startend 0.22388059701492538
+
+change_case:capital_word_frequency 0.36
+change_case:english_capital 0.0
+change_case:english_lowercase 0.48717948717948717
+combination:repeat_prompt 0.0
+combination:two_responses 0.0
+detectable_content:number_placeholders 0.0
+detectable_content:postscript 0.0
+detectable_format:constrained_response 0.0
+detectable_format:json_format 0.29411764705882354
+detectable_format:multiple_sections 0.0
+detectable_format:number_bullet_lists 0.1935483870967742
+detectable_format:number_highlighted_sections 0.0
+detectable_format:title 0.0
+keywords:existence 0.0
+keywords:forbidden_words 1.0
+keywords:frequency 0.2619047619047619
+keywords:letter_frequency 0.2727272727272727
+language:response_language 0.0
+length_constraints:nth_paragraph_first_word 0.0
+length_constraints:number_paragraphs 0.0
+length_constraints:number_sentences 0.5576923076923077
+length_constraints:number_words 0.34615384615384615
+punctuation:no_comma 1.0
+startend:end_checker 0.0
+startend:quotation 0.36585365853658536
+I0915 23:04:53.769763 138793952634688 evaluation_main.py:57] Generating eval_results_strict...
+I0915 23:04:54.080465 138793952634688 evaluation_main.py:63] Accuracy: 0.151571
+I0915 23:04:54.085933 138793952634688 evaluation_main.py:69] Generated: /home/runj/BRAIN/module_3_evaluation/runs/qwen05b_dummy_20260915_230451/eval_results_strict.jsonl
+I0915 23:04:54.086621 138793952634688 evaluation_main.py:57] Generating eval_results_loose...
+I0915 23:04:54.806603 138793952634688 evaluation_main.py:63] Accuracy: 0.153420
+I0915 23:04:54.812062 138793952634688 evaluation_main.py:69] Generated: /home/runj/BRAIN/module_3_evaluation/runs/qwen05b_dummy_20260915_230451/eval_results_loose.jsonl

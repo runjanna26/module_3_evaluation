@@ -1,0 +1,10 @@
+# Pinned so a rerun in three months produces the same numbers.
+# Full install, for the GPU machine. A laptop only needs requirements-scoring.txt.
+-r requirements-scoring.txt
+
+transformers==4.44.2
+torch==2.4.1
+accelerate==0.34.2
+# apply_chat_template renders the chat template with Jinja. torch pulls it in
+# unpinned; pinned here because the template engine shapes the exact prompt.
+Jinja2==3.1.4

@@ -1,0 +1,8 @@
+# Re-created by scripts/setup.sh at a pinned commit.
+external/
+data/
+
+__pycache__/
+.venv/
+
+# runs/ is deliberately NOT ignored: raw generations are the evidence.

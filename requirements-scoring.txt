@@ -1,0 +1,11 @@
+# Everything except the GPU step: build prompts, dummy generation, scoring,
+# analysis. This is all a laptop needs for `./run.sh ... dummy`.
+PyYAML==6.0.2
+
+# Dependencies of the official IFEval scorer (external/instruction_following_eval).
+absl-py==2.1.0
+langdetect==1.0.9
+immutabledict==4.2.0
+# 3.8.1 exactly: the scorer loads the legacy "punkt" pickle, which nltk
+# 3.8.2+ refuses to load. A newer nltk breaks sentence-count instructions.
+nltk==3.8.1
