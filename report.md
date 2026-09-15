@@ -17,6 +17,8 @@ Class project · Module 3: Evaluation · September 2026
 | **vs. model developer** | Qwen report 27.9%, **inside our interval** |
 | **vs. IFEval paper** | GPT-4 76.9%, PaLM 2 S 43.1% |
 | **Harness check** | Re-scoring the paper's GPT-4 responses reproduces its strict numbers **exactly** |
+| **Repeatability** | 4 identical runs produced **byte-identical** generations |
+| **System prompt** | 3 variants moved the headline by −0.2 to +2.0 points, **none significant** |
 | **Cost** | 18.6 min on a laptop RTX 3050 Ti (0.31 GPU-hours) |
 
 ---
@@ -141,6 +143,12 @@ correctly before spending GPU time.
 | Prompt-level loose | 29.0% | 25.4 – 33.0% | 541 prompts |
 | Instruction-level loose | 39.1% | 35.8 – 42.4% | 834 instructions |
 
+**Run-to-run spread:** the baseline was run 4 times with identical settings. All
+4 runs produced byte-identical generations, so prompt-level strict, prompt-level
+loose and instruction-level loose were identical in every run. Instruction-level
+strict ranged from 36.6% to 36.7% (0.12 points). That variation comes only from
+the scorer's random letter check (Section 3), not from the model.
+
 ### Comparison with published numbers (prompt-level strict)
 
 | Model | Size | Prompt-level strict | Source |
@@ -155,6 +163,34 @@ correctly before spending GPU time.
 interval for both prompt-level metrics, so the comparison holds either way.
 
 **Gaps:** −50.3 points to GPT-4, −16.5 points to PaLM 2 S, −1.3 points to Qwen's own report.
+
+### Sensitivity to the system prompt
+
+With an empty system prompt, Qwen's chat template inserts its own default
+(*"You are Qwen, created by Alibaba Cloud. You are a helpful assistant."*).
+We replaced it with three alternatives and changed nothing else.
+
+| System prompt | Prompt strict | Instr. strict | Prompt loose | Instr. loose | Truncated | Prompts gained / lost | p |
+|---|---|---|---|---|---|---|---|
+| Qwen default (baseline) | 26.6% | 36.7% | 29.0% | 39.1% | 3.7% | — | — |
+| "You are a helpful assistant." | 28.7% | 39.9% | 31.8% | 43.6% | 6.1% | +43 / −32 | 0.25 |
+| "…Follow every instruction … exactly, including all formatting, length, casing and punctuation requirements." | 26.4% | 37.4% | 29.6% | 41.2% | 2.8% | +32 / −33 | 1.00 |
+| "…writes in a warm, natural, conversational style." | 27.0% | 36.8% | 29.6% | 39.6% | 3.7% | +38 / −36 | 0.91 |
+
+*Gained / lost: prompts that failed in the baseline and passed with the variant,
+and the reverse (prompt-level strict). p: exact McNemar test on those paired
+prompts.*
+
+- **Changing the system prompt rewrote almost every response.** Only 9–18 of
+  541 responses stayed identical to the baseline, and 65–75 prompts changed
+  outcome.
+- **The headline barely moved.** Gains and losses nearly cancel: the net effect
+  on prompt-level strict ranges from −0.2 to +2.0 points, and no variant differs
+  significantly from the baseline.
+- **Telling the model to follow instructions did not help** (−0.2 points).
+- **The generic prompt gave the largest, non-significant gain** (+2.0 points).
+  It came mostly from change case (+12.4 points) and detectable content
+  (+11.3 points), and it also raised truncation to 6.1%.
 
 ---
 
@@ -248,12 +284,14 @@ how large each can be:
 | Truncation at 1024 tokens | lowers ours | **≤ 2.2 points** (bounded above) |
 | Scorer randomness (`letter_frequency` bug) | either | **≤ 0.12 points** instruction-level, 0 prompt-level |
 | Benchmark edit (prompt 2785) | either | ≤ 0.18 points (1 prompt in 541) |
-| Default system prompt inserted by template | unknown | not yet measured → system-prompt experiment |
+| Default system prompt inserted by template | either | **−0.2 to +2.0 points** across 3 variants, none significant (Section 4) |
+| Run-to-run variation (same hardware and settings) | none | **0**: 4 runs gave byte-identical generations (Section 4) |
 | `repetition_penalty = 1.1` from model defaults | unknown | not varied (Section 8) |
 | Laptop GPU and batch 4 instead of specified V100 and batch 8 | either, likely small | not measurable: hardware unavailable (Section 8) |
 
 **Honest bottom line:** the measurable, bounded confounds add up to under
-3 points, far smaller than the 16- and 50-point gaps. What remains is best
+5 points (truncation ≤ 2.2, system prompt ≤ 2.0, scorer and benchmark issues
+≤ 0.3), far smaller than the 16- and 50-point gaps. What remains is best
 explained by model capability. That is consistent with the steep drop on prompts
 that stack several instructions, and with the model ignoring format constraints
 while still completing the task.
@@ -299,9 +337,9 @@ runs stay within the specified V100 settings.
   are correlated, so the instruction-level interval is somewhat too narrow.
 - **Decoding defaults used as shipped.** `repetition_penalty = 1.1` from the
   model's own generation config applied to every run and was not varied.
-- **Baseline run predates version control.** It records `git_commit: none`.
-  The code that produces results is unchanged in the first commit (`b8303f4`),
-  and all later runs record their commit.
+- **First baseline run predates version control.** It records
+  `git_commit: none`. The three repeats, run from committed code (`b8303f4`,
+  `fbdd4b1`), reproduced its generations byte for byte.
 
 **Further work:** saving generations after each batch would let an interrupted
 run resume; this was not implemented or measured here.
@@ -317,7 +355,20 @@ PYTHON=.venv/bin/python ./run.sh configs/qwen05b_laptop.yaml hf    # 4 GB GPU
 PYTHON=.venv/bin/python ./run.sh configs/qwen05b.yaml hf           # specified V100 config (batch 8)
 ```
 
-Everything behind this report is in `runs/qwen05b_laptop_hf_20260916_004530/`:
+The system-prompt variants use `configs/qwen05b_laptop_sys_{generic,strict,casual}.yaml`.
+
+Every run behind this report has its own directory under `runs/`:
+
+| Run directory | Role |
+|---|---|
+| `qwen05b_laptop_hf_20260916_004530` | baseline (all figures in Sections 4–6 unless stated) |
+| `qwen05b_laptop_hf_20260916_011950`, `…_013726`, `…_015502` | baseline repeats |
+| `qwen05b_laptop_sys_generic_hf_20260916_021151` | system prompt: generic |
+| `qwen05b_laptop_sys_strict_hf_20260916_022924` | system prompt: follow instructions |
+| `qwen05b_laptop_sys_casual_hf_20260916_024446` | system prompt: conversational |
+| `qwen05b_hf_20260916_003724` | failed attempt, batch 8, out of memory (kept as a record) |
+
+Each directory contains:
 
 | File | Contents |
 |---|---|

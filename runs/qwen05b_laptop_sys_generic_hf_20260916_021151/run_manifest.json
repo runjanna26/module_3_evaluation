@@ -1,0 +1,128 @@
+{
+  "prompts": {
+    "backend": "hf",
+    "ifeval_path": "data/input_data.jsonl",
+    "ifeval_sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+    "n_prompts": 541,
+    "template_mode_config": "chat",
+    "template_mode_used": "chat",
+    "system_prompt": "You are a helpful assistant.",
+    "tokenizer": {
+      "id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "revision": "7ae557604adf67be50417f59c2c2f167def9a775"
+    },
+    "transformers_version": "4.44.2"
+  },
+  "generation": {
+    "backend": "hf",
+    "decoding_config": {
+      "do_sample": false,
+      "max_new_tokens": 1024,
+      "temperature": null,
+      "top_p": null
+    },
+    "model_id": "Qwen/Qwen2.5-0.5B-Instruct",
+    "revision_requested": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "revision_resolved": "7ae557604adf67be50417f59c2c2f167def9a775",
+    "torch_dtype": "torch.float16",
+    "attn_implementation": "sdpa",
+    "seed": 0,
+    "batch_size": 4,
+    "padding_side": "left",
+    "generate_kwargs": {
+      "max_new_tokens": 1024,
+      "do_sample": false,
+      "temperature": null,
+      "top_p": null,
+      "pad_token_id": 151643
+    },
+    "effective_generation_config": {
+      "max_length": 20,
+      "max_new_tokens": 1024,
+      "min_length": 0,
+      "min_new_tokens": null,
+      "early_stopping": false,
+      "max_time": null,
+      "stop_strings": null,
+      "do_sample": false,
+      "num_beams": 1,
+      "num_beam_groups": 1,
+      "penalty_alpha": null,
+      "use_cache": true,
+      "temperature": null,
+      "top_k": 20,
+      "top_p": null,
+      "min_p": null,
+      "typical_p": 1.0,
+      "epsilon_cutoff": 0.0,
+      "eta_cutoff": 0.0,
+      "diversity_penalty": 0.0,
+      "repetition_penalty": 1.1,
+      "encoder_repetition_penalty": 1.0,
+      "length_penalty": 1.0,
+      "no_repeat_ngram_size": 0,
+      "bad_words_ids": null,
+      "force_words_ids": null,
+      "renormalize_logits": false,
+      "constraints": null,
+      "forced_bos_token_id": null,
+      "forced_eos_token_id": null,
+      "remove_invalid_values": false,
+      "exponential_decay_length_penalty": null,
+      "suppress_tokens": null,
+      "begin_suppress_tokens": null,
+      "forced_decoder_ids": null,
+      "sequence_bias": null,
+      "token_healing": false,
+      "guidance_scale": null,
+      "low_memory": null,
+      "watermarking_config": null,
+      "num_return_sequences": 1,
+      "output_attentions": false,
+      "output_hidden_states": false,
+      "output_scores": false,
+      "output_logits": null,
+      "return_dict_in_generate": false,
+      "pad_token_id": 151643,
+      "bos_token_id": 151643,
+      "eos_token_id": [
+        151645,
+        151643
+      ],
+      "encoder_no_repeat_ngram_size": 0,
+      "decoder_start_token_id": null,
+      "num_assistant_tokens": 5,
+      "num_assistant_tokens_schedule": "heuristic",
+      "dola_layers": null,
+      "cache_implementation": null,
+      "cache_config": null,
+      "return_legacy_cache": true,
+      "prompt_lookup_num_tokens": null,
+      "max_matching_ngram_size": null,
+      "generation_kwargs": {},
+      "_from_model_config": false,
+      "transformers_version": "4.44.2"
+    },
+    "eos_token_ids": [
+      151643,
+      151645
+    ],
+    "versions": {
+      "python": "3.10.14",
+      "torch": "2.4.1+cu121",
+      "cuda": "12.1",
+      "transformers": "4.44.2"
+    },
+    "gpu": {
+      "name": "NVIDIA GeForce RTX 3050 Ti Laptop GPU",
+      "compute_capability": "8.6"
+    }
+  },
+  "scoring": {
+    "scorer_dir": "/home/runj/BRAIN/module_3_evaluation/external/instruction_following_eval",
+    "scorer_commit": "ff4d1a67e07ddd242032d3c391bc57c4db05bcc2",
+    "nltk_version": "3.8.1",
+    "langdetect_version": "1.0.9",
+    "scorer_is_deterministic": false
+  }
+}

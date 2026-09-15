@@ -1,0 +1,86 @@
+================================================================
+/home/runj/BRAIN/module_3_evaluation/runs/qwen05b_laptop_sys_generic_hf_20260916_021151/eval_results_strict.jsonl Accuracy Scores:
+prompt-level: 0.28650646950092423
+instruction-level: 0.39928057553956836
+
+change_case 0.3258426966292135
+combination 0.13846153846153847
+detectable_content 0.5660377358490566
+detectable_format 0.5668789808917197
+keywords 0.39263803680981596
+language 0.6129032258064516
+length_constraints 0.3776223776223776
+punctuation 0.21212121212121213
+startend 0.373134328358209
+
+change_case:capital_word_frequency 0.52
+change_case:english_capital 0.2
+change_case:english_lowercase 0.28205128205128205
+combination:repeat_prompt 0.12195121951219512
+combination:two_responses 0.16666666666666666
+detectable_content:number_placeholders 0.3333333333333333
+detectable_content:postscript 0.8076923076923077
+detectable_format:constrained_response 0.9
+detectable_format:json_format 0.6470588235294118
+detectable_format:multiple_sections 0.42857142857142855
+detectable_format:number_bullet_lists 0.25806451612903225
+detectable_format:number_highlighted_sections 0.5
+detectable_format:title 0.8378378378378378
+keywords:existence 0.358974358974359
+keywords:forbidden_words 0.46938775510204084
+keywords:frequency 0.30952380952380953
+keywords:letter_frequency 0.42424242424242425
+language:response_language 0.6129032258064516
+length_constraints:nth_paragraph_first_word 0.08333333333333333
+length_constraints:number_paragraphs 0.1111111111111111
+length_constraints:number_sentences 0.5192307692307693
+length_constraints:number_words 0.4423076923076923
+punctuation:no_comma 0.21212121212121213
+startend:end_checker 0.2692307692307692
+startend:quotation 0.43902439024390244
+================================================================
+/home/runj/BRAIN/module_3_evaluation/runs/qwen05b_laptop_sys_generic_hf_20260916_021151/eval_results_loose.jsonl Accuracy Scores:
+prompt-level: 0.3179297597042514
+instruction-level: 0.4364508393285372
+
+change_case 0.3595505617977528
+combination 0.15384615384615385
+detectable_content 0.5660377358490566
+detectable_format 0.5987261146496815
+keywords 0.4171779141104294
+language 0.6451612903225806
+length_constraints 0.42657342657342656
+punctuation 0.30303030303030304
+startend 0.43283582089552236
+
+change_case:capital_word_frequency 0.56
+change_case:english_capital 0.24
+change_case:english_lowercase 0.3076923076923077
+combination:repeat_prompt 0.12195121951219512
+combination:two_responses 0.20833333333333334
+detectable_content:number_placeholders 0.3333333333333333
+detectable_content:postscript 0.8076923076923077
+detectable_format:constrained_response 0.9
+detectable_format:json_format 0.8823529411764706
+detectable_format:multiple_sections 0.42857142857142855
+detectable_format:number_bullet_lists 0.2903225806451613
+detectable_format:number_highlighted_sections 0.5
+detectable_format:title 0.8378378378378378
+keywords:existence 0.358974358974359
+keywords:forbidden_words 0.5510204081632653
+keywords:frequency 0.30952380952380953
+keywords:letter_frequency 0.42424242424242425
+language:response_language 0.6451612903225806
+length_constraints:nth_paragraph_first_word 0.25
+length_constraints:number_paragraphs 0.14814814814814814
+length_constraints:number_sentences 0.5576923076923077
+length_constraints:number_words 0.4807692307692308
+punctuation:no_comma 0.30303030303030304
+startend:end_checker 0.3076923076923077
+startend:quotation 0.5121951219512195
+I0916 02:29:22.873544 124009862170432 evaluation_main.py:57] Generating eval_results_strict...
+I0916 02:29:23.448432 124009862170432 evaluation_main.py:63] Accuracy: 0.286506
+I0916 02:29:23.458213 124009862170432 evaluation_main.py:69] Generated: /home/runj/BRAIN/module_3_evaluation/runs/qwen05b_laptop_sys_generic_hf_20260916_021151/eval_results_strict.jsonl
+I0916 02:29:23.459201 124009862170432 evaluation_main.py:57] Generating eval_results_loose...
+I0916 02:29:24.464946 124009862170432 evaluation_main.py:63] Accuracy: 0.317930
+I0916 02:29:24.474912 124009862170432 evaluation_main.py:69] Generated: /home/runj/BRAIN/module_3_evaluation/runs/qwen05b_laptop_sys_generic_hf_20260916_021151/eval_results_loose.jsonl

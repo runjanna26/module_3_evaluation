@@ -1,0 +1,186 @@
+{
+  "prompt_level_strict": {
+    "accuracy": 0.2662,
+    "ci95": [
+      0.2307,
+      0.305
+    ],
+    "n": 541
+  },
+  "instruction_level_strict": {
+    "accuracy": 0.3657,
+    "ci95": [
+      0.3337,
+      0.3989
+    ],
+    "n": 834
+  },
+  "per_instruction_type": {
+    "length_constraints:number_paragraphs": {
+      "k": 0,
+      "n": 27,
+      "rate": 0.0
+    },
+    "combination:repeat_prompt": {
+      "k": 3,
+      "n": 41,
+      "rate": 0.07317073170731707
+    },
+    "combination:two_responses": {
+      "k": 2,
+      "n": 24,
+      "rate": 0.08333333333333333
+    },
+    "length_constraints:nth_paragraph_first_word": {
+      "k": 1,
+      "n": 12,
+      "rate": 0.08333333333333333
+    },
+    "change_case:english_capital": {
+      "k": 3,
+      "n": 25,
+      "rate": 0.12
+    },
+    "change_case:english_lowercase": {
+      "k": 6,
+      "n": 39,
+      "rate": 0.15384615384615385
+    },
+    "startend:end_checker": {
+      "k": 4,
+      "n": 26,
+      "rate": 0.15384615384615385
+    },
+    "punctuation:no_comma": {
+      "k": 11,
+      "n": 66,
+      "rate": 0.16666666666666666
+    },
+    "detectable_format:number_bullet_lists": {
+      "k": 6,
+      "n": 31,
+      "rate": 0.1935483870967742
+    },
+    "detectable_content:number_placeholders": {
+      "k": 7,
+      "n": 27,
+      "rate": 0.25925925925925924
+    },
+    "change_case:capital_word_frequency": {
+      "k": 9,
+      "n": 25,
+      "rate": 0.36
+    },
+    "startend:quotation": {
+      "k": 15,
+      "n": 41,
+      "rate": 0.36585365853658536
+    },
+    "keywords:frequency": {
+      "k": 16,
+      "n": 42,
+      "rate": 0.38095238095238093
+    },
+    "detectable_format:number_highlighted_sections": {
+      "k": 20,
+      "n": 48,
+      "rate": 0.4166666666666667
+    },
+    "keywords:forbidden_words": {
+      "k": 21,
+      "n": 49,
+      "rate": 0.42857142857142855
+    },
+    "keywords:existence": {
+      "k": 17,
+      "n": 39,
+      "rate": 0.4358974358974359
+    },
+    "length_constraints:number_words": {
+      "k": 23,
+      "n": 52,
+      "rate": 0.4423076923076923
+    },
+    "detectable_format:multiple_sections": {
+      "k": 7,
+      "n": 14,
+      "rate": 0.5
+    },
+    "length_constraints:number_sentences": {
+      "k": 26,
+      "n": 52,
+      "rate": 0.5
+    },
+    "keywords:letter_frequency": {
+      "k": 17,
+      "n": 33,
+      "rate": 0.5151515151515151
+    },
+    "language:response_language": {
+      "k": 19,
+      "n": 31,
+      "rate": 0.6129032258064516
+    },
+    "detectable_content:postscript": {
+      "k": 17,
+      "n": 26,
+      "rate": 0.6538461538461539
+    },
+    "detectable_format:json_format": {
+      "k": 12,
+      "n": 17,
+      "rate": 0.7058823529411765
+    },
+    "detectable_format:constrained_response": {
+      "k": 9,
+      "n": 10,
+      "rate": 0.9
+    },
+    "detectable_format:title": {
+      "k": 34,
+      "n": 37,
+      "rate": 0.918918918918919
+    }
+  },
+  "prompt_level_loose": {
+    "accuracy": 0.2902,
+    "ci95": [
+      0.2535,
+      0.3298
+    ],
+    "n": 541
+  },
+  "instruction_level_loose": {
+    "accuracy": 0.3909,
+    "ci95": [
+      0.3583,
+      0.4244
+    ],
+    "n": 834
+  },
+  "response_length": {
+    "median": 220,
+    "p90": 550,
+    "max": 1024,
+    "histogram_bins": {
+      "0": 153,
+      "100": 99,
+      "200": 97,
+      "300": 77,
+      "400": 38,
+      "500": 29,
+      "600": 14,
+      "700": 4,
+      "800": 4,
+      "900": 4,
+      "1000": 22
+    }
+  },
+  "truncation_rate": 0.037,
+  "timing": {
+    "backend": "hf",
+    "wall_clock_seconds": 1051.2,
+    "gpu_hours": 0.292,
+    "n_prompts": 541
+  }
+}
