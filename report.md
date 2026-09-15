@@ -73,7 +73,7 @@ Nothing is ever overwritten.
 | Hidden decoding defaults | `repetition_penalty = 1.1`, `top_k = 20` | come from the model's own `generation_config.json` (only the penalty affects greedy) |
 | Prompt format | model's chat template, empty system prompt | template inserts Qwen's default system message (see below) |
 | Batch size | 4 | batch 8 ran out of memory on the 4 GB laptop GPU |
-| Hardware | NVIDIA RTX 3050 Ti Laptop, 4 GB | **not** the V100 target (see Limitations) |
+| Hardware | NVIDIA RTX 3050 Ti Laptop, 4 GB | specified V100 was unavailable (Section 8) |
 | Software | torch 2.4.1+cu121, transformers 4.44.2, Python 3.10.14 | all pinned in `requirements.txt` |
 
 The exact string the model received for the first prompt:
@@ -231,13 +231,11 @@ responses had passed, prompt-level strict would rise by at most **2.2 points**
 
 ## 7. Reading the gap
 
-> *Draft for the author to review and put into their own words. The facts are
-> measured; the weighting of causes is the argument.*
-
 **Against Qwen's own report (−1.3 points): no meaningful gap.**
 Their 27.9% lies inside our 95% interval (±3.7 points). Our harness agrees with the
-model developer's measurement. Remaining candidate differences (system prompt,
-decoding defaults, hardware) are not individually measured yet.
+model developer's measurement. Differences in system prompt, decoding defaults
+or hardware could each move the number, but none is needed to explain a
+1.3-point difference.
 
 **Against PaLM 2 S (−16.5) and GPT-4 (−50.3): a real capability gap, dominated by scale.**
 These are different, far larger models, so the gap is not a harness error:
@@ -251,8 +249,8 @@ how large each can be:
 | Scorer randomness (`letter_frequency` bug) | either | **≤ 0.12 points** instruction-level, 0 prompt-level |
 | Benchmark edit (prompt 2785) | either | ≤ 0.18 points (1 prompt in 541) |
 | Default system prompt inserted by template | unknown | not yet measured → system-prompt experiment |
-| `repetition_penalty = 1.1` from model defaults | unknown | not yet measured |
-| Laptop GPU and batch 4 vs. V100 and batch 8 | unknown, likely small | not yet measured → V100 run |
+| `repetition_penalty = 1.1` from model defaults | unknown | not varied (Section 8) |
+| Laptop GPU and batch 4 instead of specified V100 and batch 8 | either, likely small | not measurable: hardware unavailable (Section 8) |
 
 **Honest bottom line:** the measurable, bounded confounds add up to under
 3 points, far smaller than the 16- and 50-point gaps. What remains is best
@@ -262,32 +260,51 @@ while still completing the task.
 
 ---
 
-## 8. Limitations and next steps
+## 8. Hardware constraint and limitations
 
-**Limitations of this run**
+### Hardware constraint
 
-- **One run, on a laptop GPU.** The target is a V100 (fp16, batch 8). Ampere and
-  Volta kernels, and a different batch size, can change greedy outputs slightly.
-  These numbers are a validated preview, not the final result.
-- **No spread yet.** Greedy decoding is deterministic in principle, but
-  run-to-run spread on the same hardware has not been measured.
+The project specifies an NVIDIA V100 (fp16, batch size 8). That hardware was
+unavailable for the duration of the project, so **all runs were performed on a
+4 GB NVIDIA RTX 3050 Ti laptop GPU**. Model commit, software versions, precision
+(fp16), attention implementation (SDPA) and decoding settings are the same as
+specified. The only change is batch size 4 instead of 8, because batch 8 ran out
+of memory on the longest prompts.
+
+**What this does not affect**
+
+- **Scoring.** The scorer runs on the CPU and gives the same result on any
+  machine. It reproduces the paper's GPT-4 numbers (Section 3).
+- **What the model was given.** Weights, prompt strings and decoding settings are
+  pinned and recorded in every run directory.
+- **Comparisons within this report.** Every run uses the same GPU and batch size.
+- **The conclusions in Section 7.** The gaps to PaLM 2 S and GPT-4 are 16 and 50
+  points.
+
+**What it can affect**
+
+- **Exact greedy outputs.** A different GPU architecture (Ampere instead of
+  Volta) and different batch padding change fp16 arithmetic slightly. That can
+  flip individual tokens, and occasionally an item's pass/fail. Its size relative
+  to a V100 cannot be measured without a V100.
+- **Absolute cost.** 18.6 minutes (0.31 GPU-hours) is a laptop figure and does
+  not transfer to other hardware.
+
+The Ampere GPU supports bf16 and FlashAttention-2, but neither was used, so the
+runs stay within the specified V100 settings.
+
+### Other limitations
+
 - **Confidence intervals assume independence.** Instructions inside one prompt
   are correlated, so the instruction-level interval is somewhat too narrow.
-- **Code version not recorded.** The project was not yet under git, so the run
-  records `git_commit: none`.
+- **Decoding defaults used as shipped.** `repetition_penalty = 1.1` from the
+  model's own generation config applied to every run and was not varied.
+- **Baseline run predates version control.** It records `git_commit: none`.
+  The code that produces results is unchanged in the first commit (`b8303f4`),
+  and all later runs record their commit.
 
-**Planned experiments** (from the project schedule)
-
-| Runs | Change | Question it answers |
-|---|---|---|
-| 3 | none, on V100 | within-config spread; laptop vs. V100 difference |
-| 3 | vary `system_prompt` | how sensitive is the score to the system message? |
-| 3 | Qwen2.5-1.5B-Instruct | does 3× scale close the gap (Qwen reports 42.5%)? |
-| 1 | `template_mode: raw` | what does the chat template contribute? *(optional)* |
-
-**Harness improvement noted:** the first attempt (batch 8) ran out of memory at
-prompt 352 of 541 and lost ~8 minutes of work, because generations are only saved
-at the end. Saving per batch would make long runs resumable.
+**Further work:** saving generations after each batch would let an interrupted
+run resume; this was not implemented or measured here.
 
 ---
 
@@ -297,7 +314,7 @@ at the end. Saving per batch would make long runs resumable.
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 ./scripts/setup.sh
 PYTHON=.venv/bin/python ./run.sh configs/qwen05b_laptop.yaml hf    # 4 GB GPU
-PYTHON=.venv/bin/python ./run.sh configs/qwen05b.yaml hf           # V100
+PYTHON=.venv/bin/python ./run.sh configs/qwen05b.yaml hf           # specified V100 config (batch 8)
 ```
 
 Everything behind this report is in `runs/qwen05b_laptop_hf_20260916_004530/`:

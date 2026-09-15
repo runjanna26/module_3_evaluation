@@ -62,8 +62,9 @@ tokenizer download). `run_manifest.json` records this as
 
 `configs/qwen05b_laptop.yaml` is identical to `qwen05b.yaml` except
 `batch_size: 4`. On a 4 GB RTX 3050 Ti, batch 8 runs out of memory on the
-longest prompts; batch 4 completes 541 prompts in about 19 minutes. Results
-from a laptop GPU are a preview, not the V100 result.
+longest prompts; batch 4 completes 541 prompts in about 19 minutes. The
+specified V100 was unavailable for this project, so all reported runs use
+the laptop configs (see report.md, Section 8).
 
 ## Things that can move the number without showing up in the config
 
