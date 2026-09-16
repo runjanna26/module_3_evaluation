@@ -46,26 +46,28 @@ src/
   manifest.py       writes run_manifest.json (what each stage really used)
 data/, external/         created by setup.sh, not committed
 runs/                    one directory per run, never overwritten
-report.md                the write-up
-evaluation_figures.ipynb every chart in the report, computed from runs/
-figures/                 the charts as 200 dpi PNGs, written by the notebook
 reference/gpt4_paper/    the paper's GPT-4 responses, scored by this harness
+report/
+  report.md         the write-up
+  report.pdf        the same, rendered for handing in
+  evaluation_figures.ipynb  every chart, computed from runs/
+  figures/          the charts as 200 dpi PNGs, written by the notebook
 ```
 
 ### Figures
 
 ```bash
 pip install -r requirements-notebook.txt
-jupyter lab evaluation_figures.ipynb        # or: jupyter nbconvert --execute --inplace ...
+jupyter lab report/evaluation_figures.ipynb   # or: jupyter nbconvert --execute --inplace ...
 ```
 
-The notebook reads `runs/` directly and rewrites `figures/*.png`. The only
-hand-entered numbers in it are the published reference values, each cited.
+The notebook reads `runs/` directly and rewrites `report/figures/*.png`. The
+only hand-entered numbers in it are the published reference values, each cited.
 
 ### PDF
 
 ```bash
-python3 scripts/make_pdf.py        # report.md + figures/ -> report.pdf
+python3 scripts/make_pdf.py        # report/report.md + figures -> report/report.pdf
 ```
 
 Renders the report through headless Chrome, the only PDF engine on this
@@ -87,7 +89,7 @@ tokenizer download). `run_manifest.json` records this as
 `batch_size: 4`. On a 4 GB RTX 3050 Ti, batch 8 runs out of memory on the
 longest prompts; batch 4 completes 541 prompts in about 19 minutes. The
 specified V100 was unavailable for this project, so all reported runs use
-the laptop configs (see report.md, Section 8).
+the laptop configs (see report/report.md, Section 8).
 
 ## Things that can move the number without showing up in the config
 

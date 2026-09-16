@@ -1,9 +1,9 @@
-# Figures notebook (evaluation_figures.ipynb) only. Not needed to run the harness.
+# Figures notebook (report/evaluation_figures.ipynb) only. Not needed to run the harness.
 -r requirements-scoring.txt
 matplotlib==3.10.9
 nbformat==5.11.1
 nbconvert==7.17.1
 ipykernel==7.3.0
 
-# report.md -> report.pdf (scripts/make_pdf.py)
+# report/report.md -> report/report.pdf (scripts/make_pdf.py)
 Markdown==3.7

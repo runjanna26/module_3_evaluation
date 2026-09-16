@@ -3,9 +3,10 @@
 
 Chrome is the only PDF engine on this machine (no pandoc, no wkhtmltopdf), so
 the print stylesheet below is what makes the output read as a document rather
-than a web page. Figures come from figures/*.png, which the notebook writes.
+than a web page. Figures come from report/figures/*.png, which the notebook
+writes.
 
-    python3 scripts/make_pdf.py                      # report.md -> report.pdf
+    python3 scripts/make_pdf.py           # report/report.md -> report/report.pdf
     python3 scripts/make_pdf.py --source notes.md --out notes.pdf
 
 Needs: pip install -r requirements-notebook.txt
@@ -102,8 +103,8 @@ TEMPLATE = """<!doctype html>
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--source", default="report.md")
-    ap.add_argument("--out", default="report.pdf")
+    ap.add_argument("--source", default="report/report.md")
+    ap.add_argument("--out", default="report/report.pdf")
     args = ap.parse_args()
 
     source = (ROOT / args.source).resolve()
@@ -118,9 +119,11 @@ def main():
     build = ROOT / "build"
     build.mkdir(exist_ok=True)
     html = build / f"{source.stem}.html"
-    # base href = repo root, so figures/*.png resolve from the build directory.
+    # base href = the markdown file's own folder, so image links written
+    # relative to it (figures/*.png) resolve from the build directory.
     html.write_text(
-        TEMPLATE.format(base=ROOT.as_uri() + "/", title=source.stem, css=CSS, body=body),
+        TEMPLATE.format(base=source.parent.as_uri() + "/", title=source.stem,
+                        css=CSS, body=body),
         encoding="utf-8",
     )
 

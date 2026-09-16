@@ -369,8 +369,9 @@ PYTHON=.venv/bin/python ./run.sh configs/qwen05b.yaml hf           # specified V
 
 The system-prompt variants use `configs/qwen05b_laptop_sys_{generic,strict,casual}.yaml`.
 
-Every chart above is regenerated from `runs/` by `evaluation_figures.ipynb`
-(`pip install -r requirements-notebook.txt`), which writes `figures/*.png`.
+Every chart above is regenerated from `runs/` by
+`report/evaluation_figures.ipynb` (`pip install -r requirements-notebook.txt`),
+which writes `report/figures/*.png`.
 
 Every run behind this report has its own directory under `runs/`:
 
