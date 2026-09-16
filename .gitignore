@@ -6,3 +6,6 @@ __pycache__/
 .venv/
 
 # runs/ is deliberately NOT ignored: raw generations are the evidence.
+
+# Intermediate HTML from scripts/make_pdf.py (report.pdf itself is committed).
+build/

@@ -62,6 +62,15 @@ jupyter lab evaluation_figures.ipynb        # or: jupyter nbconvert --execute --
 The notebook reads `runs/` directly and rewrites `figures/*.png`. The only
 hand-entered numbers in it are the published reference values, each cited.
 
+### PDF
+
+```bash
+python3 scripts/make_pdf.py        # report.md + figures/ -> report.pdf
+```
+
+Renders the report through headless Chrome, the only PDF engine on this
+machine. Intermediate HTML lands in `build/` and is not committed.
+
 ## Before the department GPU
 
 Everything except `generate.py --backend hf` runs on a laptop. Get a clean
