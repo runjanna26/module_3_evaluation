@@ -1,0 +1,9 @@
+{
+  "scoring": {
+    "scorer_dir": "/home/runj/BRAIN/module_3_evaluation/external/instruction_following_eval",
+    "scorer_commit": "ff4d1a67e07ddd242032d3c391bc57c4db05bcc2",
+    "nltk_version": "3.8.1",
+    "langdetect_version": "1.0.9",
+    "scorer_is_deterministic": false
+  }
+}

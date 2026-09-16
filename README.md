@@ -46,7 +46,21 @@ src/
   manifest.py       writes run_manifest.json (what each stage really used)
 data/, external/         created by setup.sh, not committed
 runs/                    one directory per run, never overwritten
+report.md                the write-up
+evaluation_figures.ipynb every chart in the report, computed from runs/
+figures/                 the charts as 200 dpi PNGs, written by the notebook
+reference/gpt4_paper/    the paper's GPT-4 responses, scored by this harness
 ```
+
+### Figures
+
+```bash
+pip install -r requirements-notebook.txt
+jupyter lab evaluation_figures.ipynb        # or: jupyter nbconvert --execute --inplace ...
+```
+
+The notebook reads `runs/` directly and rewrites `figures/*.png`. The only
+hand-entered numbers in it are the published reference values, each cited.
 
 ## Before the department GPU
 

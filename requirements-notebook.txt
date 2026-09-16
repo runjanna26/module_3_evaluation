@@ -1,0 +1,6 @@
+# Figures notebook (evaluation_figures.ipynb) only. Not needed to run the harness.
+-r requirements-scoring.txt
+matplotlib==3.10.9
+nbformat==5.11.1
+nbconvert==7.17.1
+ipykernel==7.3.0

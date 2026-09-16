@@ -143,6 +143,8 @@ correctly before spending GPU time.
 | Prompt-level loose | 29.0% | 25.4 – 33.0% | 541 prompts |
 | Instruction-level loose | 39.1% | 35.8 – 42.4% | 834 instructions |
 
+![Accuracy on the four IFEval metrics with 95% Wilson intervals](figures/01_headline_metrics.png)
+
 **Run-to-run spread:** the baseline was run 4 times with identical settings. All
 4 runs produced byte-identical generations, so prompt-level strict, prompt-level
 loose and instruction-level loose were identical in every run. Instruction-level
@@ -162,6 +164,8 @@ the scorer's random letter check (Section 3), not from the model.
 \* The report lists a single IFEval figure; 27.9 lies inside our confidence
 interval for both prompt-level metrics, so the comparison holds either way.
 
+![Prompt-level strict accuracy against published numbers](figures/02_published_comparison.png)
+
 **Gaps:** −50.3 points to GPT-4, −16.5 points to PaLM 2 S, −1.3 points to Qwen's own report.
 
 ### Sensitivity to the system prompt
@@ -176,6 +180,8 @@ We replaced it with three alternatives and changed nothing else.
 | "You are a helpful assistant." | 28.7% | 39.9% | 31.8% | 43.6% | 6.1% | +43 / −32 | 0.25 |
 | "…Follow every instruction … exactly, including all formatting, length, casing and punctuation requirements." | 26.4% | 37.4% | 29.6% | 41.2% | 2.8% | +32 / −33 | 1.00 |
 | "…writes in a warm, natural, conversational style." | 27.0% | 36.8% | 29.6% | 39.6% | 3.7% | +38 / −36 | 0.91 |
+
+![System-prompt variants: accuracy, and prompts gained and lost against the baseline](figures/07_system_prompt.png)
 
 *Gained / lost: prompts that failed in the baseline and passed with the variant,
 and the reverse (prompt-level strict). p: exact McNemar test on those paired
@@ -209,6 +215,8 @@ prompts.*
 | Change case (all caps / all lowercase) | 20.2% | 80.9% | 89 |
 | Punctuation (no commas) | 16.7% | 66.7% | 66 |
 | Combination (repeat prompt, two responses) | 7.7% | 73.8% | 65 |
+
+![Instruction-level strict pass rate by category, Qwen 0.5B against GPT-4](figures/03_by_category.png)
 
 *GPT-4 column: paper's published responses, scored by our harness.*
 
@@ -245,6 +253,8 @@ habits (no capitals, no commas, unusual separators) fail.
 | 2 | 25 / 179 = **14.0%** |
 | 3 | 4 / 57 = **7.0%** |
 
+![Prompt-level strict accuracy by number of instructions in the prompt](figures/05_by_instruction_count.png)
+
 This is why prompt-level accuracy (26.6%) sits well below instruction-level (36.7%).
 
 ---
@@ -258,6 +268,8 @@ This is why prompt-level accuracy (26.6%) sits well below instruction-level (36.
 | Hit the 1024-token limit | **20 responses (3.7%)** |
 | Truncated responses that still passed | 8 of 20 |
 | Truncated responses stuck in a repetition loop | ~8 of 20 (last lines repeat) |
+
+![Distribution of response lengths, with responses that hit the token limit marked](figures/06_response_length.png)
 
 **Upper bound on the truncation effect:** even if all 12 failing truncated
 responses had passed, prompt-level strict would rise by at most **2.2 points**
@@ -357,6 +369,9 @@ PYTHON=.venv/bin/python ./run.sh configs/qwen05b.yaml hf           # specified V
 
 The system-prompt variants use `configs/qwen05b_laptop_sys_{generic,strict,casual}.yaml`.
 
+Every chart above is regenerated from `runs/` by `evaluation_figures.ipynb`
+(`pip install -r requirements-notebook.txt`), which writes `figures/*.png`.
+
 Every run behind this report has its own directory under `runs/`:
 
 | Run directory | Role |
@@ -409,6 +424,8 @@ Each directory contains:
 | `detectable_format:json_format` | 70.6% | 12 / 17 | 100.0% |
 | `detectable_format:constrained_response` | 90.0% | 9 / 10 | 80.0% |
 | `detectable_format:title` | 91.9% | 34 / 37 | 100.0% |
+
+![All 25 instruction types, Qwen 0.5B against GPT-4](figures/04_by_instruction_type.png)
 
 † Contains the two randomly-scored items described in Section 3.
 Small-n types (n < 20) should not be over-interpreted.
