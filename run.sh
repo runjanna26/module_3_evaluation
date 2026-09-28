@@ -32,7 +32,9 @@ if [ ! -f data/input_data.jsonl ] || [ ! -d external/instruction_following_eval 
   exit 1
 fi
 
-RUN="runs/$(basename "${CONFIG%.yaml}")_${BACKEND}_$(date +%Y%m%d_%H%M%S)"
+# RUN_SUFFIX lets a scheduler distinguish array tasks that start in the
+# same second (scripts/v100.sbatch sets it to the SLURM job id).
+RUN="runs/$(basename "${CONFIG%.yaml}")_${BACKEND}_$(date +%Y%m%d_%H%M%S)${RUN_SUFFIX:+_$RUN_SUFFIX}"
 mkdir -p runs
 # No -p here: if two runs start in the same second, the second one fails
 # instead of silently writing into the first one's directory.

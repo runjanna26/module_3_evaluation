@@ -1,0 +1,30 @@
+{
+  "prompts": {
+    "backend": "dummy",
+    "ifeval_path": "data/input_data.jsonl",
+    "ifeval_sha256": "67ffeee0fcb87c317c5b08a2de85557b4a7e96ada6178aa645b4954fe4b53d49",
+    "n_prompts": 541,
+    "template_mode_config": "chat",
+    "template_mode_used": "raw",
+    "system_prompt": "",
+    "tokenizer": null,
+    "transformers_version": null
+  },
+  "generation": {
+    "backend": "dummy",
+    "decoding_config": {
+      "do_sample": false,
+      "max_new_tokens": 1024,
+      "temperature": null,
+      "top_p": null
+    },
+    "note": "dummy backend - canned responses, no model"
+  },
+  "scoring": {
+    "scorer_dir": "/home/runj/BRAIN/module_3_evaluation/external/instruction_following_eval",
+    "scorer_commit": "ff4d1a67e07ddd242032d3c391bc57c4db05bcc2",
+    "nltk_version": "3.8.1",
+    "langdetect_version": "1.0.9",
+    "scorer_is_deterministic": false
+  }
+}

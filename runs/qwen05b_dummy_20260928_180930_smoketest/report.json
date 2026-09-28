@@ -1,0 +1,176 @@
+{
+  "prompt_level_strict": {
+    "accuracy": 0.1516,
+    "ci95": [
+      0.1238,
+      0.1842
+    ],
+    "n": 541
+  },
+  "instruction_level_strict": {
+    "accuracy": 0.2818,
+    "ci95": [
+      0.2523,
+      0.3133
+    ],
+    "n": 834
+  },
+  "per_instruction_type": {
+    "detectable_format:number_highlighted_sections": {
+      "k": 0,
+      "n": 48,
+      "rate": 0.0
+    },
+    "detectable_content:number_placeholders": {
+      "k": 0,
+      "n": 27,
+      "rate": 0.0
+    },
+    "combination:repeat_prompt": {
+      "k": 0,
+      "n": 41,
+      "rate": 0.0
+    },
+    "detectable_format:title": {
+      "k": 0,
+      "n": 37,
+      "rate": 0.0
+    },
+    "change_case:english_capital": {
+      "k": 0,
+      "n": 25,
+      "rate": 0.0
+    },
+    "detectable_format:multiple_sections": {
+      "k": 0,
+      "n": 14,
+      "rate": 0.0
+    },
+    "keywords:existence": {
+      "k": 0,
+      "n": 39,
+      "rate": 0.0
+    },
+    "length_constraints:number_paragraphs": {
+      "k": 0,
+      "n": 27,
+      "rate": 0.0
+    },
+    "combination:two_responses": {
+      "k": 0,
+      "n": 24,
+      "rate": 0.0
+    },
+    "language:response_language": {
+      "k": 0,
+      "n": 31,
+      "rate": 0.0
+    },
+    "startend:end_checker": {
+      "k": 0,
+      "n": 26,
+      "rate": 0.0
+    },
+    "detectable_content:postscript": {
+      "k": 0,
+      "n": 26,
+      "rate": 0.0
+    },
+    "length_constraints:nth_paragraph_first_word": {
+      "k": 0,
+      "n": 12,
+      "rate": 0.0
+    },
+    "detectable_format:constrained_response": {
+      "k": 0,
+      "n": 10,
+      "rate": 0.0
+    },
+    "detectable_format:number_bullet_lists": {
+      "k": 4,
+      "n": 31,
+      "rate": 0.12903225806451613
+    },
+    "keywords:frequency": {
+      "k": 11,
+      "n": 42,
+      "rate": 0.2619047619047619
+    },
+    "detectable_format:json_format": {
+      "k": 5,
+      "n": 17,
+      "rate": 0.29411764705882354
+    },
+    "keywords:letter_frequency": {
+      "k": 10,
+      "n": 33,
+      "rate": 0.30303030303030304
+    },
+    "length_constraints:number_words": {
+      "k": 18,
+      "n": 52,
+      "rate": 0.34615384615384615
+    },
+    "change_case:capital_word_frequency": {
+      "k": 9,
+      "n": 25,
+      "rate": 0.36
+    },
+    "startend:quotation": {
+      "k": 15,
+      "n": 41,
+      "rate": 0.36585365853658536
+    },
+    "change_case:english_lowercase": {
+      "k": 19,
+      "n": 39,
+      "rate": 0.48717948717948717
+    },
+    "length_constraints:number_sentences": {
+      "k": 29,
+      "n": 52,
+      "rate": 0.5576923076923077
+    },
+    "punctuation:no_comma": {
+      "k": 66,
+      "n": 66,
+      "rate": 1.0
+    },
+    "keywords:forbidden_words": {
+      "k": 49,
+      "n": 49,
+      "rate": 1.0
+    }
+  },
+  "prompt_level_loose": {
+    "accuracy": 0.1534,
+    "ci95": [
+      0.1255,
+      0.1862
+    ],
+    "n": 541
+  },
+  "instruction_level_loose": {
+    "accuracy": 0.2842,
+    "ci95": [
+      0.2546,
+      0.3157
+    ],
+    "n": 834
+  },
+  "response_length": {
+    "median": 10,
+    "p90": 10,
+    "max": 10,
+    "histogram_bins": {
+      "0": 541
+    }
+  },
+  "truncation_rate": 0.0,
+  "timing": {
+    "backend": "dummy",
+    "wall_clock_seconds": 0.0,
+    "gpu_hours": 0.0,
+    "n_prompts": 541
+  }
+}

@@ -1,0 +1,42 @@
+# System-prompt variant (casual) of qwen05b.yaml (V100, batch 8). Identical
+# except prompt.system_prompt.
+
+# Every knob that can change a number lives in this file and nowhere else.
+# The file is copied into each run directory, so a result always travels
+# with the settings that produced it.
+
+model:
+  id: Qwen/Qwen2.5-0.5B-Instruct
+  # Pinned commit from the model's Hugging Face "Files" tab.
+  # "main" moves; a run pinned to "main" is not reproducible.
+  revision: 7ae557604adf67be50417f59c2c2f167def9a775
+
+prompt:
+  template_mode: chat     # chat | raw  ("raw" is the template ablation)
+  # NOTE: with an empty string, Qwen2.5's chat template inserts its own default
+  # system message ("You are Qwen, created by Alibaba Cloud. You are a helpful
+  # assistant."). Check sample_prompt.txt in the run directory.
+  system_prompt: "You are a friendly assistant who writes in a warm, natural, conversational style."
+
+decoding:
+  do_sample: false        # greedy baseline, as required by the brief
+  max_new_tokens: 1024    # too low inflates truncation and fakes failures
+  temperature: null
+  top_p: null
+  # Settings not listed here (e.g. repetition_penalty) come from the model's
+  # generation_config.json. The merged values are recorded per run in
+  # run_manifest.json -> generation.effective_generation_config.
+
+runtime:
+  seed: 0
+  # Lower this first if the GPU runs out of memory. Be aware that in fp16,
+  # left-padding in a batch can change greedy outputs slightly, so batch size
+  # is itself a setting that can move the numbers.
+  batch_size: 8
+
+data:
+  ifeval_path: data/input_data.jsonl
+
+scoring:
+  scorer_repo: external/instruction_following_eval
+  nltk_data: data/nltk_data

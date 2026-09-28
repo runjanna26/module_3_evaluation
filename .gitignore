@@ -9,3 +9,7 @@ __pycache__/
 
 # Intermediate HTML from scripts/make_pdf.py (report.pdf itself is committed).
 build/
+
+# SLURM job logs and the model cache the sbatch script points at.
+logs/
+.hf_cache/

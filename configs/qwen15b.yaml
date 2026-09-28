@@ -1,0 +1,39 @@
+# Scale comparison: same settings as qwen05b.yaml, 3x larger model.
+# ~3.1 GB of fp16 weights; fits a 16 GB V100 at batch 8.
+# with the settings that produced it.
+
+model:
+  id: Qwen/Qwen2.5-1.5B-Instruct
+  # Pinned commit from the model's Hugging Face "Files" tab.
+  # "main" moves; a run pinned to "main" is not reproducible.
+  revision: 989aa7980e4cf806f80c7fef2b1adb7bc71aa306
+
+prompt:
+  template_mode: chat     # chat | raw  ("raw" is the template ablation)
+  # NOTE: with an empty string, Qwen2.5's chat template inserts its own default
+  # system message ("You are Qwen, created by Alibaba Cloud. You are a helpful
+  # assistant."). Check sample_prompt.txt in the run directory.
+  system_prompt: ""       # empty baseline; vary this for the spread experiment
+
+decoding:
+  do_sample: false        # greedy baseline, as required by the brief
+  max_new_tokens: 1024    # too low inflates truncation and fakes failures
+  temperature: null
+  top_p: null
+  # Settings not listed here (e.g. repetition_penalty) come from the model's
+  # generation_config.json. The merged values are recorded per run in
+  # run_manifest.json -> generation.effective_generation_config.
+
+runtime:
+  seed: 0
+  # Lower this first if the GPU runs out of memory. Be aware that in fp16,
+  # left-padding in a batch can change greedy outputs slightly, so batch size
+  # is itself a setting that can move the numbers.
+  batch_size: 8
+
+data:
+  ifeval_path: data/input_data.jsonl
+
+scoring:
+  scorer_repo: external/instruction_following_eval
+  nltk_data: data/nltk_data

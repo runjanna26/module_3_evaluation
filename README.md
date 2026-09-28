@@ -36,7 +36,11 @@ CLAUDE.md                project rules — Claude Code reads this first
 run.sh                   one-command entry point
 requirements.txt         full pinned install (GPU machine)
 requirements-scoring.txt everything except torch/transformers (laptop)
-scripts/setup.sh         fetches prompts, scorer and NLTK data at a pinned commit
+scripts/
+  setup.sh          fetches prompts, scorer and NLTK data at a pinned commit
+  preflight.py      checks a machine before a run (GPU, data, project rules)
+  v100.sbatch       SLURM submit script for the department V100
+  make_pdf.py       renders report.md to report.pdf
 configs/*.yaml           every knob that can change a number
 src/
   build_prompts.py  applies the chat template, saves the exact string
@@ -88,8 +92,8 @@ tokenizer download). `run_manifest.json` records this as
 `configs/qwen05b_laptop.yaml` is identical to `qwen05b.yaml` except
 `batch_size: 4`. On a 4 GB RTX 3050 Ti, batch 8 runs out of memory on the
 longest prompts; batch 4 completes 541 prompts in about 19 minutes. The
-specified V100 was unavailable for this project, so all reported runs use
-the laptop configs (see report/report.md, Section 8).
+`*_laptop*` configs produced the first round of results (report/report.md);
+the V100 runs use the batch-8 configs below.
 
 ## Things that can move the number without showing up in the config
 
@@ -120,29 +124,75 @@ is recorded per run so the report can discuss it.
 - **Scorer needs `nltk==3.8.1`.** It loads the legacy `punkt` pickle, which
   newer nltk refuses to load.
 
-## Deploying to the department GPU
+## Deploying to the department V100
+
+The server runs SLURM, its nodes have internet access, and Python is a plain
+`python3 -m venv`.
+
+**1. Once, on the login node**
 
 ```bash
-git clone <your-repo> && cd ifeval-harness
-pip install -r requirements.txt
+git clone <your-repo> && cd module_3_evaluation
+python3 -m venv .venv
+.venv/bin/pip install -r requirements.txt
 ./scripts/setup.sh
-./run.sh configs/qwen05b.yaml hf
+mkdir -p logs                      # SLURM will not create the log directory
 ```
 
-The model revision in `configs/qwen05b.yaml` is pinned to a commit hash.
-`run_manifest.json` records the commit that was actually loaded.
+**2. Edit the three cluster-specific lines** at the top of
+`scripts/v100.sbatch`: `--partition`, `--gres` and `--time`.
+`sinfo -o "%P %G"` prints the partitions and their GPUs.
 
-Check `nvidia-smi` first. If generation runs out of memory, lower
-`runtime.batch_size` before touching anything else.
+**3. Check a GPU node before queueing real work**
+
+```bash
+srun --partition=gpu --gres=gpu:v100:1 --pty \
+  .venv/bin/python scripts/preflight.py --config configs/qwen05b.yaml
+```
+
+It checks the GPU is a V100 (compute capability 7.0), that `generate.py` is
+fp16 + SDPA with no FlashAttention-2, that prompts, scorer and NLTK data are
+in place, and that the model revision is pinned rather than `main`. It exits
+non-zero on anything that would waste the slot.
+
+**4. Submit**
+
+```bash
+sbatch scripts/v100.sbatch configs/qwen05b.yaml                  # one run
+sbatch --array=1-3 scripts/v100.sbatch configs/qwen05b.yaml      # three repeats
+```
+
+Each task runs preflight first, then `run.sh`. The SLURM job id is appended to
+the run directory name (`RUN_SUFFIX`), so array tasks starting in the same
+second cannot collide. Job output lands in `logs/`.
+
+**Worth knowing**
+
+- **Model cache:** the sbatch script points `HF_HOME` at `.hf_cache/` inside the
+  project, because `$HOME` quotas are usually small. Override it if your
+  cluster has a scratch area.
+- **Time budget:** 541 prompts took 18.6 minutes on a 4 GB laptop GPU at
+  batch 4. A V100 at batch 8 should be that or faster; `--time=02:00:00`
+  leaves room.
+- **Out of memory:** lower `runtime.batch_size`. That is a config change that
+  can move the numbers, and it is recorded as one.
+- **Provenance:** `run_manifest.json` records the model commit actually
+  loaded, the GPU name and compute capability, and the merged decoding
+  settings, so a V100 run is distinguishable from a laptop run afterwards.
 
 ## Experiment schedule
 
-| Runs | Config change | Purpose |
+| Runs | Command | Purpose |
 |---|---|---|
-| 3 | none | within-config spread |
-| 3 | vary `prompt.system_prompt` | prompt sensitivity |
-| 3 | `model.id` -> Qwen2.5-1.5B-Instruct | scale comparison |
+| 3 | `sbatch --array=1-3 scripts/v100.sbatch configs/qwen05b.yaml` | within-config spread, and the laptop-vs-V100 comparison |
+| 3 | `for c in generic strict casual; do sbatch scripts/v100.sbatch configs/qwen05b_sys_$c.yaml; done` | prompt sensitivity |
+| 3 | `sbatch --array=1-3 scripts/v100.sbatch configs/qwen15b.yaml` | scale comparison (Qwen2.5-1.5B) |
 | 1 | `template_mode: raw` | template ablation (optional credit) |
+
+The V100 configs mirror the laptop ones at `batch_size: 8`, so each V100 run
+has a laptop counterpart to compare against. On the laptop, 4 identical runs
+produced byte-identical generations, so any difference the repeats show on the
+V100 is hardware or batch size, not run-to-run noise.
 
 ---
 
