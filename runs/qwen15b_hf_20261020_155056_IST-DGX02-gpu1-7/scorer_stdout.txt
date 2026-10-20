@@ -1,0 +1,86 @@
+================================================================
+/home/brain1/runj/module_3_evaluation/runs/qwen15b_hf_20261020_155056_IST-DGX02-gpu1-7/eval_results_strict.jsonl Accuracy Scores:
+prompt-level: 0.3826247689463956
+instruction-level: 0.4892086330935252
+
+change_case 0.550561797752809
+combination 0.26153846153846155
+detectable_content 0.5849056603773585
+detectable_format 0.6624203821656051
+keywords 0.4785276073619632
+language 0.7741935483870968
+length_constraints 0.34265734265734266
+punctuation 0.25757575757575757
+startend 0.582089552238806
+
+change_case:capital_word_frequency 0.56
+change_case:english_capital 0.4
+change_case:english_lowercase 0.6410256410256411
+combination:repeat_prompt 0.14634146341463414
+combination:two_responses 0.4583333333333333
+detectable_content:number_placeholders 0.2962962962962963
+detectable_content:postscript 0.8846153846153846
+detectable_format:constrained_response 1.0
+detectable_format:json_format 0.7647058823529411
+detectable_format:multiple_sections 0.7142857142857143
+detectable_format:number_bullet_lists 0.4838709677419355
+detectable_format:number_highlighted_sections 0.5208333333333334
+detectable_format:title 0.8378378378378378
+keywords:existence 0.5641025641025641
+keywords:forbidden_words 0.5102040816326531
+keywords:frequency 0.3333333333333333
+keywords:letter_frequency 0.5151515151515151
+language:response_language 0.7741935483870968
+length_constraints:nth_paragraph_first_word 0.08333333333333333
+length_constraints:number_paragraphs 0.14814814814814814
+length_constraints:number_sentences 0.4423076923076923
+length_constraints:number_words 0.40384615384615385
+punctuation:no_comma 0.25757575757575757
+startend:end_checker 0.6153846153846154
+startend:quotation 0.5609756097560976
+================================================================
+/home/brain1/runj/module_3_evaluation/runs/qwen15b_hf_20261020_155056_IST-DGX02-gpu1-7/eval_results_loose.jsonl Accuracy Scores:
+prompt-level: 0.4288354898336414
+instruction-level: 0.5347721822541966
+
+change_case 0.5730337078651685
+combination 0.3230769230769231
+detectable_content 0.5849056603773585
+detectable_format 0.6815286624203821
+keywords 0.5276073619631901
+language 0.7741935483870968
+length_constraints 0.4125874125874126
+punctuation 0.30303030303030304
+startend 0.7014925373134329
+
+change_case:capital_word_frequency 0.56
+change_case:english_capital 0.44
+change_case:english_lowercase 0.6666666666666666
+combination:repeat_prompt 0.1951219512195122
+combination:two_responses 0.5416666666666666
+detectable_content:number_placeholders 0.2962962962962963
+detectable_content:postscript 0.8846153846153846
+detectable_format:constrained_response 1.0
+detectable_format:json_format 0.8235294117647058
+detectable_format:multiple_sections 0.7142857142857143
+detectable_format:number_bullet_lists 0.5483870967741935
+detectable_format:number_highlighted_sections 0.5208333333333334
+detectable_format:title 0.8378378378378378
+keywords:existence 0.5641025641025641
+keywords:forbidden_words 0.5918367346938775
+keywords:frequency 0.38095238095238093
+keywords:letter_frequency 0.5757575757575758
+language:response_language 0.7741935483870968
+length_constraints:nth_paragraph_first_word 0.3333333333333333
+length_constraints:number_paragraphs 0.2222222222222222
+length_constraints:number_sentences 0.4807692307692308
+length_constraints:number_words 0.46153846153846156
+punctuation:no_comma 0.30303030303030304
+startend:end_checker 0.6538461538461539
+startend:quotation 0.7317073170731707
+I1020 16:28:13.425643 140408238245696 evaluation_main.py:57] Generating eval_results_strict...
+I1020 16:28:14.422738 140408238245696 evaluation_main.py:63] Accuracy: 0.382625
+I1020 16:28:14.440392 140408238245696 evaluation_main.py:69] Generated: /home/brain1/runj/module_3_evaluation/runs/qwen15b_hf_20261020_155056_IST-DGX02-gpu1-7/eval_results_strict.jsonl
+I1020 16:28:14.441807 140408238245696 evaluation_main.py:57] Generating eval_results_loose...
+I1020 16:28:15.685068 140408238245696 evaluation_main.py:63] Accuracy: 0.428835
+I1020 16:28:15.702537 140408238245696 evaluation_main.py:69] Generated: /home/brain1/runj/module_3_evaluation/runs/qwen15b_hf_20261020_155056_IST-DGX02-gpu1-7/eval_results_loose.jsonl

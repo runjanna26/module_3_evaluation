@@ -1,0 +1,6 @@
+{
+  "backend": "hf",
+  "wall_clock_seconds": 2182.4,
+  "gpu_hours": 0.6062,
+  "n_prompts": 541
+}
