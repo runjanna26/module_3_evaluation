@@ -126,24 +126,45 @@ is recorded per run so the report can discuss it.
 
 ## Deploying to the department V100
 
-The server runs SLURM, its nodes have internet access, and Python is a plain
-`python3 -m venv`.
+The department GPUs are booked one card at a time (for example
+`10.204.100.192 [DGX-GPU 1]`) and used over SSH. The hosts have internet
+access, and Python is a plain `python3 -m venv`.
 
-**1. Once, on the login node**
+**1. Once, on the GPU host**
 
 ```bash
+ssh <you>@10.204.100.192
 git clone <your-repo> && cd module_3_evaluation
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 ./scripts/setup.sh
-mkdir -p logs                      # SLURM will not create the log directory
 ```
 
-**2. Edit the three cluster-specific lines** at the top of
+**2. Run the whole schedule on your booked card, inside tmux**
+
+```bash
+tmux new -s ifeval
+./scripts/run_schedule.sh 1          # 1 = the GPU number you booked
+# detach with Ctrl-b then d; come back with: tmux attach -t ifeval
+```
+
+`run_schedule.sh` pins the job to that one physical card (numbered by PCI bus,
+the same way the booking list and `nvidia-smi` number them), warns if another
+job is already on it, runs preflight for every config, then the 9 runs one
+after another. Expect about 3 hours. Everything is logged to `logs/`, and a
+failed run is recorded without cancelling the rest. To run only part of it:
+`./scripts/run_schedule.sh 1 repeats` (or `sysprompt`, `scale`).
+
+### If the cluster uses SLURM instead
+
+`scripts/v100.sbatch` is for clusters that queue jobs. Create the log
+directory first (`mkdir -p logs`; SLURM will not), then:
+
+**Edit the three cluster-specific lines** at the top of
 `scripts/v100.sbatch`: `--partition`, `--gres` and `--time`.
 `sinfo -o "%P %G"` prints the partitions and their GPUs.
 
-**3. Check a GPU node before queueing real work**
+**Check a GPU node before queueing real work**
 
 ```bash
 srun --partition=gpu --gres=gpu:v100:1 --pty \
@@ -155,7 +176,7 @@ fp16 + SDPA with no FlashAttention-2, that prompts, scorer and NLTK data are
 in place, and that the model revision is pinned rather than `main`. It exits
 non-zero on anything that would waste the slot.
 
-**4. Submit**
+**Submit**
 
 ```bash
 sbatch scripts/v100.sbatch configs/qwen05b.yaml                  # one run
@@ -182,12 +203,15 @@ second cannot collide. Job output lands in `logs/`.
 
 ## Experiment schedule
 
-| Runs | Command | Purpose |
-|---|---|---|
-| 3 | `sbatch --array=1-3 scripts/v100.sbatch configs/qwen05b.yaml` | within-config spread, and the laptop-vs-V100 comparison |
-| 3 | `for c in generic strict casual; do sbatch scripts/v100.sbatch configs/qwen05b_sys_$c.yaml; done` | prompt sensitivity |
-| 3 | `sbatch --array=1-3 scripts/v100.sbatch configs/qwen15b.yaml` | scale comparison (Qwen2.5-1.5B) |
-| 1 | `template_mode: raw` | template ablation (optional credit) |
+On the booked DGX card, `./scripts/run_schedule.sh 1` runs the first three
+rows. The group name runs one row on its own.
+
+| Runs | Group | Config | Purpose |
+|---|---|---|---|
+| 3 | `repeats` | `qwen05b.yaml` | within-config spread, and the laptop-vs-V100 comparison |
+| 3 | `sysprompt` | `qwen05b_sys_{generic,strict,casual}.yaml` | prompt sensitivity |
+| 3 | `scale` | `qwen15b.yaml` | scale comparison (Qwen2.5-1.5B) |
+| 1 | — | `template_mode: raw` | template ablation (optional credit) |
 
 The V100 configs mirror the laptop ones at `batch_size: 8`, so each V100 run
 has a laptop counterpart to compare against. On the laptop, 4 identical runs
