@@ -157,10 +157,18 @@ itself (GPU model, Python version, data, pinned revision) before each real run.
 ![Accuracy on the four IFEval metrics with 95% Wilson intervals, both models on the V100](figures/01_headline_metrics.png)
 
 **Run-to-run spread:** each model was run 3 times on the V100 with identical
-settings, and all 3 runs produced byte-identical generations. Every remaining
-difference between repeats (0.24 points instruction-level for 0.5B, 0.18 points
-prompt-level for 1.5B) comes from the scorer's random letter check (Section 3),
-not from the model.
+settings, and all 3 runs produced byte-identical generations. Prompt-level
+strict across the repeats, as mean [min–max]:
+
+| Model | Prompt-level strict across 3 repeats | Spread |
+|---|---|---|
+| Qwen2.5-0.5B | 26.06% [26.06–26.06] | **0.00 points** |
+| Qwen2.5-1.5B | 38.14% [38.08–38.26] | 0.18 points |
+
+So run-to-run spread for the 0.5B headline was **0.0 points** on this hardware at
+batch 8. Every remaining difference between repeats (0.24 points instruction-level
+for 0.5B, 0.18 points prompt-level for 1.5B) comes from the scorer's random letter
+check (Section 3), not from the model. *Computed by `src/aggregate_runs.py`.*
 
 ### Comparison with published numbers (prompt-level strict)
 
