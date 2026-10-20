@@ -52,6 +52,17 @@ def main():
     config_path = (ROOT / args.config) if not pathlib.Path(args.config).is_absolute() \
         else pathlib.Path(args.config)
 
+    section("Python")
+    version = ".".join(map(str, sys.version_info[:3]))
+    # The official scorer annotates dataclass fields as `list[str]`, which only
+    # Python 3.9+ can evaluate; on 3.8 it crashes when it is imported, after
+    # the GPU has already spent ~15 minutes generating.
+    if sys.version_info < (3, 9):
+        fail(f"Python {version} - the official scorer needs 3.9+. Make the venv with:"
+             " uv venv --python 3.10.14 --seed .venv")
+    else:
+        ok(f"Python {version} ({sys.executable})")
+
     section("Python packages")
     try:
         import yaml

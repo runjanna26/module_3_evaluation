@@ -4,7 +4,11 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."          # repo root, so the paths below are stable
 
-PYTHON="${PYTHON:-python3}"
+# Prefer the project venv, so the NLTK download lands in the same Python that
+# will run the scorer (a system python3 may not have nltk at all).
+if [ -z "${PYTHON:-}" ]; then
+  if [ -x .venv/bin/python ]; then PYTHON=.venv/bin/python; else PYTHON=python3; fi
+fi
 
 # Pinned google-research commit. The prompts and the scorer both come from
 # this one commit, so the benchmark and its checker cannot drift apart.
@@ -20,6 +24,10 @@ if [ "$(cat external/SCORER_COMMIT 2>/dev/null || true)" != "$GR_COMMIT" ]; then
   rm -rf external/gr external/instruction_following_eval external/SCORER_COMMIT
   git init -q external/gr
   git -C external/gr remote add origin "$GR_REPO"
+  # Older git refuses --filter in a plain `git init` repo unless partial clone
+  # is switched on explicitly; newer git does this itself. Harmless on both.
+  git -C external/gr config core.repositoryformatversion 1
+  git -C external/gr config extensions.partialClone origin
   # sparse + blob:none: download one folder, not the whole monorepo.
   git -C external/gr sparse-checkout set instruction_following_eval
   git -C external/gr fetch -q --depth 1 --filter=blob:none origin "$GR_COMMIT"

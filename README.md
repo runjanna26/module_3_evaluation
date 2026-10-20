@@ -132,12 +132,19 @@ access, and Python is a plain `python3 -m venv`.
 
 **1. Once, on the GPU host**
 
+The DGX's system Python is 3.8, but the official scorer needs **3.9+** (it
+annotates fields as `list[str]`, which 3.8 cannot load). `uv` installs the same
+Python the laptop runs, 3.10.14, into your home directory with no admin rights:
+
 ```bash
-ssh <you>@10.204.100.192
-git clone <your-repo> && cd module_3_evaluation
-python3 -m venv .venv
+curl -LsSf https://astral.sh/uv/install.sh | sh
+export PATH="$HOME/.local/bin:$PATH"
+
+git clone https://github.com/runjanna26/module_3_evaluation.git
+cd module_3_evaluation
+uv venv --python 3.10.14 --seed .venv      # --seed adds pip, which run.sh's snapshot uses
 .venv/bin/pip install -r requirements.txt
-./scripts/setup.sh
+./scripts/setup.sh                          # uses .venv automatically
 ```
 
 **2. Run the whole schedule on your booked card, inside tmux**
