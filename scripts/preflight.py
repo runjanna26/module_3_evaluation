@@ -97,6 +97,14 @@ def main():
 
     if not torch.cuda.is_available():
         fail("CUDA not available - generate.py --backend hf needs a GPU")
+        # Most common cause on the department DGX: a CUDA 11 driver with the
+        # default CUDA 12 torch wheel. torch's own warning above says
+        # "driver ... too old" when that is the case.
+        if torch.version.cuda and torch.version.cuda.startswith("12"):
+            print("         torch is built for CUDA 12. If `nvidia-smi` shows CUDA Version 11.x,"
+                  " install the CUDA 11.8 build:\n"
+                  "         pip uninstall -y torch && pip install torch==2.4.1"
+                  " --index-url https://download.pytorch.org/whl/cu118")
     else:
         name = torch.cuda.get_device_name(0)
         major, minor = torch.cuda.get_device_capability(0)

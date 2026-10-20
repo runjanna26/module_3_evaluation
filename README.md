@@ -147,6 +147,20 @@ uv venv --python 3.10.14 --seed .venv      # --seed adds pip, which run.sh's sna
 ./scripts/setup.sh                          # uses .venv automatically
 ```
 
+**This DGX's NVIDIA driver (450.119.03) only supports CUDA 11.0,** but the
+default torch wheel is built for CUDA 12.1, so torch cannot see the GPU there.
+Swap in the CUDA 11.8 build of the same torch version. It runs on this driver
+through NVIDIA's minor-version compatibility, which needs driver 450.80.02 or
+newer:
+
+```bash
+.venv/bin/pip uninstall -y torch
+.venv/bin/pip install torch==2.4.1 --index-url https://download.pytorch.org/whl/cu118
+```
+
+Each run records `torch.version.cuda` in `run_manifest.json`, so V100 runs
+(CUDA 11.8) and laptop runs (CUDA 12.1) stay distinguishable afterwards.
+
 **2. Run the whole schedule on your booked card, inside tmux**
 
 ```bash
